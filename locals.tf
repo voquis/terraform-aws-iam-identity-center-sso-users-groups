@@ -14,7 +14,7 @@ locals {
         account_key    = account_key
         group_key      = group
         account_number = account.account_number
-      }
+      } if !account.is_management
     ]
   ])
 

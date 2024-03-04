@@ -4,6 +4,7 @@ Note that only inline and managed policies are currently supported.
 This modules assumes a multi-account AWS organisation is being used and a single IAM Identity Center (SSO) instance has been set up to manage account access across the entire organisation.
 This module requires defining `accounts`, `users` and `groups`.
 Groups should specify either an inline policy (e.g. with an `aws_iam_policy_document` data block) or an AWS-managed policy, e.g. `"arn:aws:iam::aws:policy/AdministratorAccess"`.
+To indicate that an account is a management account and to not create account assignments (e.g. if managing IAM Identity Center from a delegated account), set `is_management = true`.
 
 ## Usage
 If using inline policies, provision them with data blocks, for example:
@@ -57,7 +58,7 @@ Alternatively, use AWS managed policies per the `super_admins` example group bel
 ```terraform
 module "iam_identity_center" {
   source  = "voquis/iam-identity-center/aws"
-  version = "0.0.1"
+  version = "0.0.2"
 
   # AWS Accounts
   accounts = {
@@ -93,6 +94,14 @@ module "iam_identity_center" {
       account_number = "456789012345"
       groups = [
         "deployers",
+        "super_admins",
+      ]
+    }
+
+    root = {
+      account_number = "567890123456"
+      is_management  = true
+      groups = [
         "super_admins",
       ]
     }
