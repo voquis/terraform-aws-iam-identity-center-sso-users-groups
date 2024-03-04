@@ -22,5 +22,6 @@ variable "accounts" {
   type = map(object({
     account_number = string
     groups         = list(string)
+    is_management  = optional(bool, false)
   }))
 }
